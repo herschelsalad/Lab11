@@ -1,41 +1,33 @@
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
 public class Lab11 {
-public static void main(String[] args){
+	public static void main(String[] args) {
 
-  String inputFilePath = "src/people.dat";
-  String outputFilePath = "src/copy_people.da";
+		String inputFilePath = "src/people.dat";
+		String outputFilePath = "src/copy_people.da";
 
-try (
+		try (
 
-  DataInputStream dataInputStream = new DataInputStream(new FileInputStream(inputFilePath));
-	DataOutputStream dataOutputStream = new DataOutputStream(new FileOutputStream(outputFilePath))
-)
-}
-while(true){
-  try {
-    int age = DataInputStream.readInt();
-    String firstName = DataInputStream.readUTF();
-    String lastName = DataInputStream.readUTF();
-    String address = DataInputStream.readUTF();
-    int zipCode = DataInputStream.readInt();
-    Double salary = DataInputStream.reaDouble();
-//read file
-      System.out.printf("Age: %d, Name: %s %s, Address: %s, Zip: %d, Salary: %.2f%n",
-	                            age, firstName, lastName, address, zipCode, salary);
-//write file
-    dataOutputStream.writeInt(age);
-    dataOutputStream.writeUTF(firstName);
-    dataOutputStream.writeUTF(lastName);
-    dataOutputStream.writeUTF(address);  
-    dataOutputStream.writeInt(zipCode);
-    dataOutputStream.writeDouble(salary);
-  }
-catch (EOFException e){
-  break;
-}
-}
-System.out.println("copy ready check"+outputFileParh);
+				DataInputStream dataInputStream = new DataInputStream(new FileInputStream(inputFilePath));
+				DataOutputStream dataOutputStream = new DataOutputStream(new FileOutputStream(outputFilePath))) {
 
-}catch (IOFException e){
-  e.PrintStackableTrace();
+			int age = dataInputStream.readInt();
+			String firstName = dataInputStream.readUTF();
+			String lastName = dataInputStream.readUTF();
+			String fullName = firstName + "" + lastName;
+			String address = dataInputStream.readUTF();
+			int zipCode = dataInputStream.readInt();
+			double salary = dataInputStream.readDouble();
+			System.out.println("Age: " + age + "\nName: " + fullName + "\nAddress: " + address + "\nZip: " + zipCode
+					+ "\nSalary: " + salary);
+			while (true) {
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
