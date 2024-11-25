@@ -1,0 +1,61 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Lab11Prob02 {
+
+    public static void main(String[] args) {
+        ArrayList<Person> persons = readBinaryFile("src/people.dat");
+        Collections.sort(persons); // Sorts in descending order by salary
+        sortedDataToFile(persons, "src/people-salary-sorted.dat");
+
+        // Optional: Validate by reading and printing the new file
+       validateSortedFile("src/people-salary-sorted.dat");
+    }
+
+    public static ArrayList<Person> readBinaryFile(String filePath) {
+        ArrayList<Person> persons = new ArrayList<>();
+        try (DataInputStream dis = new DataInputStream(new FileInputStream(filePath))) {
+            while (true) {
+                try {
+                    int age = dis.readInt();
+                    String name = dis.readUTF();
+                    String address = dis.readUTF();
+                    int zipCode = dis.readInt();
+                    double salary = dis.readDouble();
+                    // Create a Person instance and add to the list
+                    persons.add(new Person(age, name, address, zipCode, salary));
+                } catch (EOFException eof) {
+                    break; // End of file reached
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return persons;
+    }
+
+    public static void sortedDataToFile(ArrayList<Person> persons, String filePath) {
+        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(filePath))) {
+            for (Person person : persons) {
+                dos.writeUTF(person.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void validateSortedFile(String filePath) {
+        try (DataInputStream dis = new DataInputStream(new FileInputStream(filePath))) {
+            while (true) {
+                try {
+                    System.out.println(dis.readUTF());
+                } catch (EOFException eof) {
+                    break; // End of file reached
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
