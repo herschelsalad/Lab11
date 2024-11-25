@@ -1,7 +1,19 @@
+/**
+* File: Lab11Prob1.java
+* Class: CSCI 1302
+* Author: Nikiema Michael & Herschel Braddock
+* Created on: Nov 23, 2025
+* Last Modified: Nov 23, 2025
+* Description: Save new file correctly using Objects
+*/
+
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class Person implements Comparable<Person> {
+public class Person implements Serializable, Comparable<Person> {
+    private static final long serialVersionUID = 1L; // Default UID
+
     private int age;
     private String name;
     private String address;
@@ -61,11 +73,11 @@ public class Person implements Comparable<Person> {
         this.salary = salary;
     }
 
-    // toString method to format output
+    // toString method
     @Override
     public String toString() {
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
-        return String.format("%d %s %s %d %s", 
+        return String.format("%d %s %s %d %s",
                 age, name, address, zipCode, currencyFormat.format(salary));
     }
 
