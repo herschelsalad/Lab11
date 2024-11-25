@@ -1,0 +1,71 @@
+/**
+* File: Lab11Prob1.java
+* Class: CSCI 1302
+* Author: Nikiema Michael & Herschel Braddock
+* Created on: Nov 23, 2025
+* Last Modified: Nov 23, 2025
+* Description: Read a Binary file
+*/
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Lab11Prob03 {
+
+    public static void main(String[] args) {
+        ArrayList<Person> persons = readBinaryFile("src/people.dat");
+        Collections.sort(persons); // Sorts in descending order by salary
+        writeSerializedObjectsToFile(persons, "src/people-salary-sorted-objects.dat");
+
+        // Optional: Validate by reading and printing the new file
+        validateSerializedFile("src/people-salary-sorted-objects.dat");
+    }
+
+    public static ArrayList<Person> readBinaryFile(String filePath) {
+        ArrayList<Person> persons = new ArrayList<>();
+        try (DataInputStream dis = new DataInputStream(new FileInputStream(filePath))) {
+            while (true) {
+                try {
+                    int age = dis.readInt();
+                    String name = dis.readUTF();
+                    String address = dis.readUTF();
+                    int zipCode = dis.readInt();
+                    double salary = dis.readDouble();
+                    // Create a Person instance and add to the list
+                    persons.add(new Person(age, name, address, zipCode, salary));
+                } catch (EOFException eof) {
+                    break; // End of file reached
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return persons;
+    }
+
+    public static void writeSerializedObjectsToFile(ArrayList<Person> persons, String filePath) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            for (Person person : persons) {
+                oos.writeObject(person); // Write Person object to file
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void validateSerializedFile(String filePath) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
+            while (true) {
+                try {
+                    Person person = (Person) ois.readObject(); // Deserialize Person object
+                    System.out.println(person); // Print Person information
+                } catch (EOFException eof) {
+                    break; // End of file reached
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
