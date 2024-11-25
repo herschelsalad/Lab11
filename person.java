@@ -12,8 +12,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class Person implements Serializable, Comparable<Person> {
-    private static final long serialVersionUID = 1L; // Default UID
-
+    
     private int age;
     private String name;
     private String address;
