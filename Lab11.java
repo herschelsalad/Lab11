@@ -1,33 +1,56 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+/**
+* File: Lab11Pron1.java
+* Class: CSCI 1302
+* Author: Nikiema Michael & Herschel Braddock
+* Created on: Nov 23, 2025
+* Last Modified: Nov 23, 2025
+* Description: Read a Binary file
+*/
 
-public class Lab11 {
-	public static void main(String[] args) {
+import java.io.*;
 
-		String inputFilePath = "src/people.dat";
-		String outputFilePath = "src/copy_people.da";
+public class Lab11Prob01 {
 
-		try (
+    public static void main(String[] args) {
+        readBinaryFile("src/people.dat");
+    }
 
-				DataInputStream dataInputStream = new DataInputStream(new FileInputStream(inputFilePath));
-				DataOutputStream dataOutputStream = new DataOutputStream(new FileOutputStream(outputFilePath))) {
+    public static void readBinaryFile(String filePath) {
+        DataInputStream dis = null;
 
-			int age = dataInputStream.readInt();
-			String firstName = dataInputStream.readUTF();
-			String lastName = dataInputStream.readUTF();
-			String fullName = firstName + "" + lastName;
-			String address = dataInputStream.readUTF();
-			int zipCode = dataInputStream.readInt();
-			double salary = dataInputStream.readDouble();
-			System.out.println("Age: " + age + "\nName: " + fullName + "\nAddress: " + address + "\nZip: " + zipCode
-					+ "\nSalary: " + salary);
-			while (true) {
+        try {
+            dis = new DataInputStream(new FileInputStream(filePath));
 
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+            // Declare variables outside the loop
+            int age;
+            String name;
+            String address;
+            int zipCode;
+            double salary;
+
+            while (true) {
+                try {
+                    // Read data into previously declared variables
+                    age = dis.readInt();
+                    name = dis.readUTF();
+                    address = dis.readUTF();
+                    zipCode = dis.readInt();
+                    salary = dis.readDouble();
+
+                    System.out.printf("%d %s %s %d %.2f\n", age, name, address, zipCode, salary);
+
+                } catch (EOFException eof) {
+                    break; // End of file reached
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (dis != null) dis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
