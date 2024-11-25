@@ -1,5 +1,5 @@
 /**
-* File: Lab11Prob1.java
+* File: Person.java
 * Class: CSCI 1302
 * Author: Nikiema Michael & Herschel Braddock
 * Created on: Nov 23, 2025
